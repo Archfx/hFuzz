@@ -19,9 +19,27 @@ fn main() {
 
     solver.assert(&x_or_not_y);
     solver.assert(&not_x_or_y);
+    solver.assert(&x);
 
     println!();
-    println!("finding a model for:");
+    println!("finding a model for x -> y, y -> x, x true:");
+    println!();
+    println!("{}", solver);
+
+    if solver.check() == SatResult::Sat {
+        let model = solver.get_model().unwrap();
+        println!("model:");
+        println!("x -> {}", model.eval(&x, false).unwrap().as_bool().unwrap());
+        println!("y -> {}", model.eval(&y, false).unwrap().as_bool().unwrap());
+    }
+    solver.reset();
+
+    solver.assert(&x_or_not_y);
+    solver.assert(&not_x_or_y);
+    solver.assert(&not_x);
+
+    println!();
+    println!("finding a model for x -> y, y -> x, x false:");
     println!();
     println!("{}", solver);
 
